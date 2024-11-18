@@ -8,4 +8,5 @@ I used this data: (https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
 Data markers reflect the magnitude of the earthquake by their size and the depth of the earthquake by color. Earthquakes with higher magnitudes appear larger, and earthquakes with greater depth appear darker in color.
 
 
+(https://mascee.github.io/leaflet-challenge/Leaflet-Part-1/)
 
