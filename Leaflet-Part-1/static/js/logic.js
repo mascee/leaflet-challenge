@@ -1,11 +1,11 @@
 // Function to determine color based on depth
 function getColor(depth) {
-  if (depth > 90) return "#ea2c2c";
-  if (depth > 70) return "#ea822c";
-  if (depth > 50) return "#ee9c00";
-  if (depth > 30) return "#eecc00";
-  if (depth > 10) return "#d4ee00";
-  return "#98ee00";
+  if (depth > 90) return "#800000";
+  if (depth > 70) return "#b30000";
+  if (depth > 50) return "#e60000";
+  if (depth > 30) return "#ff1a1a";
+  if (depth > 10) return "#ff6666";
+  return "#ff9999";
 }
 
 //All earthquakes past 30 days
@@ -24,7 +24,7 @@ function createFeatures(earthquakeData) {
   function pointToLayer(feature, latlng) {
     return L.circleMarker(latlng, 
       {
-        radius: feature.properties.mag * 5,
+        radius: feature.properties.mag * 4,
         fillColor: getColor(feature.geometry.coordinates[2]),
         color: "black",
         weight: 1,
