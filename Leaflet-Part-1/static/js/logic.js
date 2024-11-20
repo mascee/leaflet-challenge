@@ -1,14 +1,15 @@
+// Function to determine color based on depth
+function getColor(depth) {
+  if (depth > 90) return "#ea2c2c";
+  if (depth > 70) return "#ea822c";
+  if (depth > 50) return "#ee9c00";
+  if (depth > 30) return "#eecc00";
+  if (depth > 10) return "#d4ee00";
+  return "#98ee00";
+}
+
 //All earthquakes past 30 days
 let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
-
-//Past 7 days significant earthquakes
-//let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson"
-
-//let url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-01-01&endtime=2021-01-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
-
-//All earthquakes past day
-//let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
-
 
 // Perform a GET request to the query URL/
 d3.json(url).then(function (data) {
@@ -24,14 +25,14 @@ function createFeatures(earthquakeData) {
     return L.circleMarker(latlng, 
       {
         radius: feature.properties.mag * 5,
-        fillColor: "red",
+        fillColor: getColor(feature.geometry.coordinates[2]),
         color: "black",
         weight: 1,
         opacity: 1,
-        fillOpacity: feature.geometry.coordinates[2] / 20
+        fillOpacity: 0.8
       }
     );
-}
+  }
 
   // Function that runs once for each feature in the features array.
   function onEachFeature(feature, layer) {
@@ -88,5 +89,30 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+  
+  
+  // Set up the legend
+  let legend = L.control({ position: "bottomright" });
 
+  legend.onAdd = function () {
+  let div = L.DomUtil.create("div", "info legend");
+
+  // Define depths array
+  let depths = [-10, 10, 30, 50, 70, 90];
+
+  // Loop through intervals to generate labels with colored squares
+  for (let i = 0; i < depths.length; i++) {
+    div.innerHTML +=
+      `<i style="background: ${getColor(depths[i])}; width: 18px; height: 18px; display: inline-block; margin-right: 5px;"></i>` +
+      depths[i] + (depths[i + 1] ? `&ndash;${depths[i + 1]}<br>` : '+');
+  }
+
+  return div;
+};
+
+// Add the legend to the map
+legend.addTo(myMap);
+
+  
 }
+
